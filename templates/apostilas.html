@@ -1,0 +1,14 @@
+
+
+
+<div class="feed apostilas">
+    <h1>Apostilas</h1>
+
+    {% for apostila in apostilas %}
+    <form action="#" method="post">
+        {{apostila}}
+      <button type="submit">Download</button>
+    </form>
+    <br>
+    {% endfor %}
+  </div>

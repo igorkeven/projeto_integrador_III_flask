@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <title>Study Hub</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+        <link href="static/css/cadastro.css" rel="stylesheet">
+        <link href="static/css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/home.css">
+    </head>
+    <body style="background-image: url('{{fundo}}'); background-size: cover; background-repeat: no-repeat; background-position: center;  background-attachment: fixed;">
+
+        
+
+
+        <div class="navbar">
+            <img class="logo_navBar" src="/static/imagens/logo.png" alt="">
+            Study Hub
+           
+            <div class="botoes_navbar">
+               
+               
+               
+                
+                <a  href="/sair">sair</a>
+            </div>
+           
+            <input type="text" class="search-bar" placeholder="Pesquisar...">
+            <button>pesquisar</button>
+        </div>
+        
+        <aside class="perfil">
+            
+            
+           
+
+            <img src="{{img_perfil}}" alt="foto de perfil" title="Mudar foto"  width="200" height="150" id="foto_perfi">
+
+            <br>
+
+
+            <h1 class="nome"> igor keven</h1>
+            <div class="menu_lateral_esquendo">
+
+              <div class="menu_lateral_esquendo_1">
+                
+                
+                <h3 class="menu_perfil" id="btn_amigos">Amigos</h3>
+                <h3 class="menu_perfil" id="btn_apostila">Apostilas</h3>
+                <h3 class="menu_perfil" id="btn_desafios">Desafios</h3>
+                <h3 class="menu_perfil" id="btn_config">configuração</h3>
+                <br><br><br>
+              </div>
+
+
+              <div class="menu_lateral_esquendo_2" >
+                
+                <span class="custom-icon btn_voltarConfig">voltar</span>
+               
+                <h3 class="menu_perfil" id="escolha_formulario_senha"> Mudar senha</h3>
+                <h3 class="menu_perfil" id="btn_mudar_tema"> Mudar tema</h3>
+                <h3 class="menu_perfil" id="btn_mudar_capa">Mudar foto de capa</h3>
+                
+               
+            
+                
+                <h3 class="menu_perfil" id="apagar_conta">Apagar minha conta</h3>
+              </div>
+                
+              <div class="menu_lateral_esquendo_3" >
+                
+                <span class="custom-icon btn_voltarConfig">voltar</span>
+               
+                <h3 class="menu_perfil" id=""> Meus desafios</h3>
+                <h3 class="menu_perfil" id=""> desafios publicos</h3>
+     
+      
+              </div>
+                
+                
+            </div>
+            by igor keven 2024 &copy;<br>
+            <a class="poiticas" >politicas de privacidade</a>
+            <a class="poiticas" >termos e condições</a>
+        </aside>
+        <div class="conteudo">
+
+          <div id="feed">
+            {% include 'feed.html' %}
+        </div>
+        
+        <div id="mudar_senha" style="display: none;">
+            {% include 'mudar_senha.html' %}
+        </div>
+
+        <div id="amigos" style="display: none;">
+          {% include 'amigos.html' %}
+        </div>
+        
+        <div id="mudar_capa" style="display: none;">
+        {% include 'trocar_capa.html' %}
+        </div>
+
+        <div id="apostilas" style="display: none;">
+          {% include 'apostilas.html' %}
+        </div>
+
+        <div id="mudar_tema" style="display: none;">
+          {% include 'mudar_tema.html' %}
+        </div>
+
+
+
+      </div>
+
+
+
+        <aside class="lateral_direita">
+            <div class="menu_lateral_direito">
+                
+                <h3 style="color: black;" > convites para desafios</h3>
+                <h5>teste</h5>
+                <h5>teste</h5>
+                <h5>teste</h5>
+                <h5>teste</h5>
+                <h5>teste</h5>
+                <h5>teste</h5>
+            </div>
+
+            <div class="menu_lateral_direito">
+                
+                <h3 style="color: black;"> convites para desafios</h3>
+               
+            
+                
+                <h3 class="menu_perfil" id="apagar_conta">meus desafios</h3>
+            </div>
+        </aside>
+
+
+
+
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+     
+     
+
+       <script src="/static/javascript/home.js"></script>
+          
+         <script>
+          function mudarTema(tema) {
+    document.documentElement.style.setProperty('--tema', tema);
+}
+
+window.onload = function() {
+    var tema = "{{ tema }}";  // Obter o tema da sessão do usuário
+    mudarTema(tema);  // Aplicar o tema à página
+};
+
+
+         </script>
+    </body>
+</html>
+
+
+
+
+

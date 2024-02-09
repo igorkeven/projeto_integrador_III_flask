@@ -1,0 +1,30 @@
+
+database usuarios
+
+
+tabela usuario
+
+id
+nome
+senha
+tema (padrão #3b5998)
+img_perfil (padrão /static/imagens/user.png )
+img_capa (padrão /static/imagens/fundo.jpg)
+
+---------------------------------------------------------------------
+
+tabela apostilas
+
+id
+apostila_nome
+
+-------------------------------------------------------
+
+tabela desafios
+
+id
+id_usuario
+pergunta
+resposta
+
+
