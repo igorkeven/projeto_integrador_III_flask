@@ -27,4 +27,20 @@ id_usuario
 pergunta
 resposta
 
+-----------------------------
 
+ TABLE amigos 
+    usuario_id INT,
+    amigo_id INT,
+    PRIMARY KEY (usuario_id, amigo_id),
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+    FOREIGN KEY (amigo_id) REFERENCES usuario(id)
+
+----------------------------------------
+
+solicitacoes_amizade 
+    solicitante_id INT,
+    solicitado_id INT,
+    PRIMARY KEY (solicitante_id, solicitado_id),
+    FOREIGN KEY (solicitante_id) REFERENCES usuario(id),
+    FOREIGN KEY (solicitado_id) REFERENCES usuario(id)

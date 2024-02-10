@@ -27,6 +27,20 @@
 
     </div>
 
+    {% set menssagens = get_flashed_messages() %}
+{% if menssagens %}
+<div id="alerta" class="feed">
+    {{ menssagens[0] }}
+</div>
+
+<script>
+    setTimeout(function() {
+        document.getElementById('alerta').style.display = 'none';
+    }, 5000);
+</script>
+{% endif %}
+
+
       <div class="feed">
         <img src="/static/imagens/usuario.png" alt="">
         <h1>nome usuario </h1>

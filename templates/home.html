@@ -45,7 +45,7 @@
             <br>
 
 
-            <h1 class="nome"> igor keven</h1>
+            <h1 class="nome"> {{nome}}</h1>
             <div class="menu_lateral_esquendo">
 
               <div class="menu_lateral_esquendo_1">
@@ -70,7 +70,7 @@
                
             
                 
-                <h3 class="menu_perfil" id="apagar_conta">Apagar minha conta</h3>
+                <h3 class="menu_perfil" id="btn_apagar_conta">Apagar minha conta</h3>
               </div>
                 
               <div class="menu_lateral_esquendo_3" >
@@ -115,6 +115,9 @@
           {% include 'mudar_tema.html' %}
         </div>
 
+        <div id="apagar_conta" style="display: none;">
+          {% include 'apagar_conta.html' %}
+        </div>
 
 
       </div>
@@ -124,13 +127,27 @@
         <aside class="lateral_direita">
             <div class="menu_lateral_direito">
                 
-                <h3 style="color: black;" > convites para desafios</h3>
-                <h5>teste</h5>
-                <h5>teste</h5>
-                <h5>teste</h5>
-                <h5>teste</h5>
-                <h5>teste</h5>
-                <h5>teste</h5>
+                <h3 style="color: black;" > convites de amizade</h3>
+                
+        {% if solicitacoes_amizade %}
+              {% for pedido in solicitacoes_amizade %}
+              
+              <img style="width: 50px; height: 50px;" src="{{pedido[4]}}" alt="">
+              <h5>{{pedido[1]}}</h5>
+      
+                <form action="/adicionar_amigo" method="post">
+                  <input type="hidden" name="amigo_id" value="{{pedido[0]}}">
+                  
+                  <button type="submit">Aceitar</button>
+                </form>
+                
+                <form action="/negar_amizade" method="post">
+                  <input type="hidden" name="amigo_id" value="{{pedido[0]}}">
+                  <button type="submit">Negar pedido</button>
+                </form>
+              {% endfor %}
+        {% endif %}
+
             </div>
 
             <div class="menu_lateral_direito">

@@ -4,7 +4,7 @@
 $(document).ready(function(){
     var activeButton = null;
   
-    $("#escolha_formulario_senha, #btn_mudar_capa, #btn_amigos, #btn_apostila, #btn_mudar_tema ").click(function(){
+    $("#escolha_formulario_senha, #btn_mudar_capa, #btn_amigos, #btn_apostila, #btn_mudar_tema, #btn_apagar_conta ").click(function(){
       var clickedId = $(this).attr('id');
       var targetDivId;
       var buttonText;
@@ -20,11 +20,14 @@ $(document).ready(function(){
         buttonText = "Feed";
       } else if (clickedId === 'btn_apostila'){
         targetDivId = 'apostilas';
-        buttonText = "Feed";
-
-      
+        buttonText = "Feed"; 
       } else if (clickedId === 'btn_mudar_tema'){
         targetDivId = 'mudar_tema';
+        buttonText = "Feed";
+
+      }
+       else if (clickedId === 'btn_apagar_conta'){
+        targetDivId = 'apagar_conta';
         buttonText = "Feed";
 
       }
@@ -37,11 +40,12 @@ $(document).ready(function(){
           clickedId === 'escolha_formulario_senha' ? "Mudar senha" : 
           clickedId === 'btn_mudar_capa' ? "Mudar foto de capa" : 
           activeButton === 'btn_amigos' ? "Amigos" :
-          activeButton === 'btn_mudar_tema' ? 'Mudar Tema' : 'apostilas' );
+          activeButton === 'btn_mudar_tema' ? 'Mudar Tema' :
+          activeButton === 'btn_apagar_conta' ? 'Apagar conta': 'apostilas' );
         activeButton = null;
       } else {
         // Esconda todas as divs
-        $("#feed, #mudar_senha, #mudar_capa, #amigos, #apostilas , #mudar_tema").hide();
+        $("#feed, #mudar_senha, #mudar_capa, #amigos, #apostilas , #mudar_tema, #apagar_conta").hide();
   
         // Mostre a div correspondente ao botão clicado
         $("#" + targetDivId).show();
@@ -53,7 +57,8 @@ $(document).ready(function(){
             activeButton === 'escolha_formulario_senha' ? "Mudar senha" : 
             activeButton === 'btn_mudar_capa' ? "Mudar foto de capa" : 
             activeButton === 'btn_amigos' ? "Amigos" : 
-            activeButton === 'btn_mudar_tema' ? 'Mudar Tema' : 'apostilas' );
+            activeButton === 'btn_mudar_tema' ? 'Mudar Tema' :
+            activeButton === 'btn_apagar_conta' ? 'Apagar conta': 'apostilas' );
         }
   
         activeButton = clickedId;

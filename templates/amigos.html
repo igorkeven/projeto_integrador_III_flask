@@ -2,34 +2,44 @@
 
 
 <div class="feed">
-    <h1>Seus amigos </h1>
-    <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
+
+  {% if amigos %}
+  <h1>Seus amigos </h1>
+  {% for amigo in amigos %}
+    
+    <img style="width: 100px; height: 100px;" src="{{amigo[4]}}" alt="">
+        <h1>{{amigo[1]}}</h1>
         <form action="#" method="post">
          <button type="submit">Desfazer amizade</button>
         </form>
+        -------------------------------------------------
         <br><br>
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-         <button type="submit">Desfazer amizade</button>
-        </form>
-        <br><br>
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-         <button type="submit">Desfazer amizade</button>
-        </form>
+
+        {% endfor %}
+    {% else %}
+<h1>Você ainda não tem amigos <br> adicione alguns amigos!!</h1>
+        {% endif %}
 
 
   </div>
 
 
-  <div class="feed">
+  
+
+    {% if possiveis_amigos %}
+    <div class="feed">
     <h1>possiveis amigos </h1>
-    <img src="/static/imagens/usuario.png" alt="">
-    <h1>nome usuario </h1>
-    <form action="#" method="post">
-      <button type="submit">Adicionar</button>
-    </form>
+    {% for possivel_amigo in possiveis_amigos  %}
+    <img style="width: 100px; height: 100px;" src="{{possivel_amigo[4]}}" alt="">
+        <h1>{{possivel_amigo[1]}}</h1>
+        <form action="/pedido_amizade" method="post">
+          <input type="hidden" name="amigo_id" value="{{possivel_amigo[0]}}">
+         <button type="submit">Adicionar amigo</button>
+        </form>
+        -------------------------------------------------
+        <br><br>
+    {% endfor %}
   </div>
+    {% endif %}
+    
+  
