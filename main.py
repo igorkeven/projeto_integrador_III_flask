@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, session
-import mysql.connector
+import sqlite3
 import os
 
 
@@ -36,20 +36,12 @@ def login():
 def home():
     if 'usuario' in session:  # SE TENTAR ENTRAR SEM LOGIN NAO CAI AQUI
         nome = session['usuario']  # Obtenha o nome do usuário da sessão
-
-        # Criar uma conexão com o banco de dados
-        mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password=senhaBD,
-        database="usuarios"
-        )
-
-        # Obter um cursor para executar consultas
-        cursor = mydb.cursor()
+# Criar uma conexão com o banco de dados
+        conn = sqlite3.connect('usuarios.db')
+        cursor = conn.cursor()
 
         # Buscar os dados do usuário no banco de dados
-        cursor.execute("SELECT * FROM usuario WHERE nome = %s", (nome,))
+        cursor.execute("SELECT * FROM usuario WHERE nome = ?", (nome,))
 
         # Armazenar resultados da consulta em uma variável
         usuario = cursor.fetchone()
@@ -59,8 +51,10 @@ def home():
             SELECT u.* 
             FROM usuario u
             INNER JOIN amigos a ON u.id = a.amigo_id
-            WHERE a.usuario_id = %s
+            WHERE a.usuario_id = ?
         """, (usuario[0],))
+
+        
 
         amigos = cursor.fetchall()  # Obter todos os dados dos amigos
 
@@ -71,9 +65,9 @@ def home():
             WHERE id NOT IN (
                 SELECT amigo_id 
                 FROM amigos 
-                WHERE usuario_id = %s
+                WHERE usuario_id = ?
             )
-            AND id != %s
+            AND id != ?
         """, (usuario[0], usuario[0]))
 
         possiveis_amigos = cursor.fetchall()  # Obter todos os dados dos possíveis amigos
@@ -82,15 +76,16 @@ def home():
             SELECT u.* 
             FROM usuario u
             INNER JOIN solicitacoes_amizade s ON u.id = s.solicitante_id
-            WHERE s.solicitado_id = %s
+            WHERE s.solicitado_id = ?
         """, (usuario[0],))
 
         solicitacoes_amizade = cursor.fetchall()
 
         # Fechar cursor e conexão com banco de dados
         cursor.close()
-        mydb.close()
-        
+        conn.close()
+
+
         if usuario is not None:  # Se encontramos um usuário que corresponde ao nome de usuário
             tema = usuario[3]  # Obtenha o tema do perfil do usuário
             img_perfil = usuario[4]  # Obtenha a imagem de perfil do usuário
@@ -123,23 +118,18 @@ def acesso():
 
     # processamento dos dados
     # Criar uma conexão com o banco de dados
-    mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password=senhaBD,
-    database="usuarios"
-    )
+    conn = sqlite3.connect('usuarios.db')
+    cursor = conn.cursor()
 
-    # Obter um cursor para executar consultas
-    cursor = mydb.cursor()
-    cursor.execute("SELECT * FROM usuario WHERE nome = %s AND senha = %s", (nome, senha))
+    
+    cursor.execute("SELECT * FROM usuario WHERE nome = ? AND senha = ?", (nome, senha))
 
     # Armazenar resultados da consulta em uma variável
     usuario = cursor.fetchone()
 
     # Fechar cursor e conexão com banco de dados
     cursor.close()
-    mydb.close()
+    conn.close()
 
     if usuario is not None:  # Se encontramos um usuário que corresponde ao nome de usuário e senha
         session['usuario'] = nome # CRIA UMA SESSION USUARIO COM O NOME DO USUARIO DENTRO
@@ -173,34 +163,27 @@ def cadastrar():
 
     # processamento dos dados
     # Criar uma conexão com o banco de dados
-    mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password=senhaBD,
-    database="usuarios"
-    )
-
+    conn = sqlite3.connect('usuarios.db')
+  
     # Obter um cursor para executar consultas
-    cursor = mydb.cursor()
-
+    cursor = conn.cursor()
     # Inserir dados na tabela usuario
-    cursor.execute("insert into usuario (nome, senha, tema, img_perfil, img_capa ) values (%s, %s, %s, %s, %s)", (nome, senha, tema, img_perfil, img_capa))
+    cursor.execute("INSERT INTO usuario (nome, senha, tema, img_perfil, img_capa) VALUES (?, ?, ?, ?, ?)", (nome, senha, tema, img_perfil, img_capa))
 
     # Obter o ID do usuário que acabou de ser inserido
     usuario_id = cursor.lastrowid
 
     # Commit as mudanças
-    mydb.commit()
+    conn.commit()
 
     # Fechar cursor e conexão com banco de dados
     cursor.close()
-    mydb.close()
+    conn.close()
 
     session['usuario'] = nome
     session['id'] = usuario_id  # Armazenar o ID do usuário na sessão
 
     return redirect('/home')
-
 
 
 
@@ -213,25 +196,21 @@ def mudarTema():
     nome = session['usuario']  # Obtenha o nome do usuário da sessão
     id = session['id'] 
     # Criar uma conexão com o banco de dados
-    mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password=senhaBD,
-    database="usuarios"
-    )
-
+    # Criar uma conexão com o banco de dados
+    conn = sqlite3.connect('usuarios.db')
+  
     # Obter um cursor para executar consultas
-    cursor = mydb.cursor()
+    cursor = conn.cursor()
 
     # Atualizar o tema no perfil do usuário
-    cursor.execute("UPDATE usuario SET tema = %s WHERE id = %s", (tema, id))
+    cursor.execute("UPDATE usuario SET tema = ? WHERE id = ?", (tema, id))
 
     # Commit as mudanças
-    mydb.commit()
+    conn.commit()
 
     # Fechar cursor e conexão com banco de dados
     cursor.close()
-    mydb.close()
+    conn.close()
     flash('Tema alterado com sucesso')
     return redirect('/home')
 
@@ -245,25 +224,21 @@ def novaSenha():
     nome = session['usuario']  # Obtenha o nome do usuário da sessão
     id = session['id']
     # Criar uma conexão com o banco de dados
-    mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password=senhaBD,
-    database="usuarios"
-    )
-
+    # Criar uma conexão com o banco de dados
+    conn = sqlite3.connect('usuarios.db')
+  
     # Obter um cursor para executar consultas
-    cursor = mydb.cursor()
+    cursor = conn.cursor()
 
     # Atualizar a senha no perfil do usuário
-    cursor.execute("UPDATE usuario SET senha = %s WHERE id = %s", (novasenha, id))
+    cursor.execute("UPDATE usuario SET senha = ? WHERE id = ?", (novasenha, id))
 
     # Commit as mudanças
-    mydb.commit()
+    conn.commit()
 
     # Fechar cursor e conexão com banco de dados
     cursor.close()
-    mydb.close()
+    conn.close()
 
     flash('Senha alterada com sucesso')
     return redirect('/home')
@@ -283,25 +258,21 @@ def nova_capa():
     
 
     # Criar uma conexão com o banco de dados
-    mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password=senhaBD,
-    database="usuarios"
-    )
-
+    # Criar uma conexão com o banco de dados
+    conn = sqlite3.connect('usuarios.db')
+  
     # Obter um cursor para executar consultas
-    cursor = mydb.cursor()
+    cursor = conn.cursor()
 
     # Atualizar a capa no perfil do usuário
-    cursor.execute("UPDATE usuario SET img_capa = %s WHERE id = %s", (nome_caminho, id))
+    cursor.execute("UPDATE usuario SET img_capa = ? WHERE id = ?", (nome_caminho, id))
 
     # Commit as mudanças
-    mydb.commit()
+    conn.commit()
 
     # Fechar cursor e conexão com banco de dados
     cursor.close()
-    mydb.close()
+    conn.close()
 
     flash('Foto de capa alterada com sucesso')
     return redirect('/home')
@@ -316,18 +287,13 @@ def apagar_conta():
         id_usuario = session['id']
 
         # Criar uma conexão com o banco de dados
-        mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password=senhaBD,
-        database="usuarios"
-        )
-
+        # Criar uma conexão com o banco de dados
+        conn = sqlite3.connect('usuarios.db')
+    
         # Obter um cursor para executar consultas
-        cursor = mydb.cursor()
-
+        cursor = conn.cursor()
         # Buscar os dados do usuário no banco de dados
-        cursor.execute("SELECT * FROM usuario WHERE id = %s", (id_usuario,))
+        cursor.execute("SELECT * FROM usuario WHERE id = ?", (id_usuario,))
 
         # Armazenar resultados da consulta em uma variável
         usuario = cursor.fetchone()
@@ -339,17 +305,17 @@ def apagar_conta():
             os.remove(usuario[5])  # img_perfil
 
         # Remover os registros de amizade na tabela amigos
-        cursor.execute("DELETE FROM amigos WHERE usuario_id = %s OR amigo_id = %s", (usuario[0], usuario[0]))
+        cursor.execute("DELETE FROM amigos WHERE usuario_id = ? OR amigo_id = ?", (usuario[0], usuario[0]))
 
         # Remover o registro do usuário na tabela usuario
-        cursor.execute("DELETE FROM usuario WHERE id = %s", (usuario[0],))
+        cursor.execute("DELETE FROM usuario WHERE id = ?", (usuario[0],))
 
         # Commit as mudanças
-        mydb.commit()
+        conn.commit()
 
         # Fechar cursor e conexão com banco de dados
         cursor.close()
-        mydb.close()
+        conn.close()
 
         # Remover o usuário da sessão
         session.pop('usuario', None)
@@ -369,25 +335,21 @@ def pedido_amizade():
     amigo_id = request.form.get('amigo_id')
 
     # Criar uma conexão com o banco de dados
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password=senhaBD,
-        database="usuarios"
-    )
-
+    # Criar uma conexão com o banco de dados
+    conn = sqlite3.connect('usuarios.db')
+  
     # Obter um cursor para executar consultas
-    cursor = mydb.cursor()
+    cursor = conn.cursor()
 
     # Inserir o pedido de amizade na tabela
-    cursor.execute("INSERT INTO solicitacoes_amizade (solicitante_id, solicitado_id) VALUES (%s, %s)", (usuario_id, amigo_id))
+    cursor.execute("INSERT INTO solicitacoes_amizade (solicitante_id, solicitado_id) VALUES (?, ?)", (usuario_id, amigo_id))
 
     # Commit as mudanças
-    mydb.commit()
+    conn.commit()
 
     # Fechar cursor e conexão com banco de dados
     cursor.close()
-    mydb.close()
+    conn.close()
 
     return redirect('/home')
 
@@ -399,29 +361,24 @@ def adicionar_amigo():
     amigo_id = request.form.get('amigo_id')
 
     # Criar uma conexão com o banco de dados
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password=senhaBD,
-        database="usuarios"
-    )
-
+    # Criar uma conexão com o banco de dados
+    conn = sqlite3.connect('usuarios.db')
+  
     # Obter um cursor para executar consultas
-    cursor = mydb.cursor()
-
+    cursor = conn.cursor()
     # Remover o pedido de amizade da tabela
-    cursor.execute("DELETE FROM solicitacoes_amizade WHERE solicitante_id = %s AND solicitado_id = %s", (amigo_id, usuario_id))
+    cursor.execute("DELETE FROM solicitacoes_amizade WHERE solicitante_id = ? AND solicitado_id = ?", (amigo_id, usuario_id))
 
     # Adicionar a amizade na tabela de amigos
-    cursor.execute("INSERT INTO amigos (usuario_id, amigo_id) VALUES (%s, %s)", (usuario_id, amigo_id))
-    cursor.execute("INSERT INTO amigos (usuario_id, amigo_id) VALUES (%s, %s)", (amigo_id, usuario_id))
+    cursor.execute("INSERT INTO amigos (usuario_id, amigo_id) VALUES (?, ?)", (usuario_id, amigo_id))
+    cursor.execute("INSERT INTO amigos (usuario_id, amigo_id) VALUES (?, ?)", (amigo_id, usuario_id))
 
     # Commit as mudanças
-    mydb.commit()
+    conn.commit()
 
     # Fechar cursor e conexão com banco de dados
     cursor.close()
-    mydb.close()
+    conn.close()
 
     return redirect('/home')
 
@@ -434,25 +391,20 @@ def negar_amizade():
     amigo_id = request.form.get('amigo_id')
 
     # Criar uma conexão com o banco de dados
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password=senhaBD,
-        database="usuarios"
-    )
-
+    conn = sqlite3.connect('usuarios.db')
+  
     # Obter um cursor para executar consultas
-    cursor = mydb.cursor()
+    cursor = conn.cursor()
 
     # Remover o pedido de amizade da tabela
-    cursor.execute("DELETE FROM solicitacoes_amizade WHERE solicitante_id = %s AND solicitado_id = %s", (amigo_id, usuario_id))
+    cursor.execute("DELETE FROM solicitacoes_amizade WHERE solicitante_id = ? AND solicitado_id = ?", (amigo_id, usuario_id))
 
     # Commit as mudanças
-    mydb.commit()
+    conn.commit()
 
     # Fechar cursor e conexão com banco de dados
     cursor.close()
-    mydb.close()
+    conn.close()
 
     return redirect('/home')
 
