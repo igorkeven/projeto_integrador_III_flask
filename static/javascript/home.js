@@ -4,7 +4,7 @@
 $(document).ready(function(){
     var activeButton = null;
   
-    $("#escolha_formulario_senha, #btn_mudar_capa, #btn_amigos, #btn_apostila, #btn_mudar_tema, #btn_apagar_conta, #btn_menssagens ").click(function(){
+    $("#escolha_formulario_senha, #btn_mudar_capa, #btn_amigos, #btn_apostila, #btn_mudar_tema, #btn_apagar_conta, #btn_mensagens ").click(function(){
       var clickedId = $(this).attr('id');
       var targetDivId;
       var buttonText;
@@ -29,8 +29,8 @@ $(document).ready(function(){
         targetDivId = 'apagar_conta';
         buttonText = "Feed";
       }
-       else if (clickedId === 'btn_menssagens'){
-        targetDivId = 'menssagens';
+       else if (clickedId === 'btn_mensagens'){
+        targetDivId = 'mensagens';
         buttonText = "Feed";
 
       }
@@ -45,11 +45,11 @@ $(document).ready(function(){
           clickedId === 'btn_amigos' ? "Amigos" :
           clickedId === 'btn_mudar_tema' ? 'Mudar Tema' :
           clickedId === 'btn_apagar_conta' ? 'Apagar conta':
-          clickedId === 'btn_menssagens' ? 'Menssagens': 'apostilas' );
+          clickedId === 'btn_mensagens' ? 'Mensagens': 'apostilas' );
         activeButton = null;
       } else {
         // Esconda todas as divs
-        $("#feed, #mudar_senha, #mudar_capa, #amigos, #apostilas , #mudar_tema, #apagar_conta, #menssagens").hide();
+        $("#feed, #mudar_senha, #mudar_capa, #amigos, #apostilas , #mudar_tema, #apagar_conta, #mensagens").hide();
   
         // Mostre a div correspondente ao botão clicado
         $("#" + targetDivId).show();
@@ -63,7 +63,7 @@ $(document).ready(function(){
             activeButton === 'btn_amigos' ? "Amigos" : 
             activeButton === 'btn_mudar_tema' ? 'Mudar Tema' :
             activeButton === 'btn_apagar_conta' ? 'Apagar conta':
-            activeButton === 'btn_menssagens' ? 'Menssagens':
+            activeButton === 'btn_mensagens' ? 'Mensagens':
              'apostilas' );
         }
   
