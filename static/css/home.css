@@ -198,6 +198,12 @@ h1.nome{
   font-size: 18px;
 }
 
+
+.divOculta {
+  display: none;
+}
+
+
 /* --------------------------------------------------------- */
 
 
@@ -226,7 +232,7 @@ h1.nome{
 }
 
 .modal-content{
-  background-color: white;
+  background-color:  var(--tema);
   margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;

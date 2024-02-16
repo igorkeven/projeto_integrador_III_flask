@@ -278,6 +278,40 @@ def nova_capa():
     return redirect('/home')
 
 
+@app.route('/enviar_foto_perfil', methods=["POST"])
+def enviar_foto_perfil():
+    nova_foto = request.files.get('foto')
+    id = session['id']
+    nome = session['usuario']
+
+    nome_arquivo = f"Foto_perfil_{nome}_{id}.{nova_foto.filename.split('.')[-1] }"
+    nova_foto.save(os.path.join('static/imagens/fotoPerfil/', nome_arquivo))
+    nome_caminho = f"static/imagens/fotoPerfil/{nome_arquivo}"
+
+    
+
+
+    # Criar uma conexão com o banco de dados
+    conn = sqlite3.connect('usuarios.db')
+  
+    # Obter um cursor para executar consultas
+    cursor = conn.cursor()
+
+    # Atualizar a foto no perfil do usuário
+    cursor.execute("UPDATE usuario SET img_perfil = ? WHERE id = ?", (nome_caminho, id))
+
+    # Commit as mudanças
+    conn.commit()
+
+    # Fechar cursor e conexão com banco de dados
+    cursor.close()
+    conn.close()
+
+    flash('Foto de perfil alterada com sucesso')
+
+    return redirect('/home')
+
+
 
 # codiga para apagar a conta do usuario , apagando todos os dados e imagens relacionadas
 @app.route('/apagar_conta', methods=['POST'])

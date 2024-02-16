@@ -4,7 +4,7 @@
 $(document).ready(function(){
     var activeButton = null;
   
-    $("#escolha_formulario_senha, #btn_mudar_capa, #btn_amigos, #btn_apostila, #btn_mudar_tema, #btn_apagar_conta ").click(function(){
+    $("#escolha_formulario_senha, #btn_mudar_capa, #btn_amigos, #btn_apostila, #btn_mudar_tema, #btn_apagar_conta, #btn_menssagens ").click(function(){
       var clickedId = $(this).attr('id');
       var targetDivId;
       var buttonText;
@@ -24,10 +24,13 @@ $(document).ready(function(){
       } else if (clickedId === 'btn_mudar_tema'){
         targetDivId = 'mudar_tema';
         buttonText = "Feed";
-
       }
        else if (clickedId === 'btn_apagar_conta'){
         targetDivId = 'apagar_conta';
+        buttonText = "Feed";
+      }
+       else if (clickedId === 'btn_menssagens'){
+        targetDivId = 'menssagens';
         buttonText = "Feed";
 
       }
@@ -39,13 +42,14 @@ $(document).ready(function(){
         $(this).text(
           clickedId === 'escolha_formulario_senha' ? "Mudar senha" : 
           clickedId === 'btn_mudar_capa' ? "Mudar foto de capa" : 
-          activeButton === 'btn_amigos' ? "Amigos" :
-          activeButton === 'btn_mudar_tema' ? 'Mudar Tema' :
-          activeButton === 'btn_apagar_conta' ? 'Apagar conta': 'apostilas' );
+          clickedId === 'btn_amigos' ? "Amigos" :
+          clickedId === 'btn_mudar_tema' ? 'Mudar Tema' :
+          clickedId === 'btn_apagar_conta' ? 'Apagar conta':
+          clickedId === 'btn_menssagens' ? 'Menssagens': 'apostilas' );
         activeButton = null;
       } else {
         // Esconda todas as divs
-        $("#feed, #mudar_senha, #mudar_capa, #amigos, #apostilas , #mudar_tema, #apagar_conta").hide();
+        $("#feed, #mudar_senha, #mudar_capa, #amigos, #apostilas , #mudar_tema, #apagar_conta, #menssagens").hide();
   
         // Mostre a div correspondente ao botão clicado
         $("#" + targetDivId).show();
@@ -58,7 +62,9 @@ $(document).ready(function(){
             activeButton === 'btn_mudar_capa' ? "Mudar foto de capa" : 
             activeButton === 'btn_amigos' ? "Amigos" : 
             activeButton === 'btn_mudar_tema' ? 'Mudar Tema' :
-            activeButton === 'btn_apagar_conta' ? 'Apagar conta': 'apostilas' );
+            activeButton === 'btn_apagar_conta' ? 'Apagar conta':
+            activeButton === 'btn_menssagens' ? 'Menssagens':
+             'apostilas' );
         }
   
         activeButton = clickedId;
@@ -121,10 +127,10 @@ $(document).ready(function(){
     modal.innerHTML = `
     <div class="modal-content">
         <span class="close">&times;</span>
-        <form action="/enviarFoto" enctype="multipart/form-data" method="post">
+        <form action="/enviar_foto_perfil" enctype="multipart/form-data" method="post">
             <input type="file" name="foto" id="foto">
-            <input type="hidden" name="emailUsuario" value="{{ email }}">
-            <input type="hidden" name="rota" value="/cliente">
+           
+            
             <input type="submit" value="Enviar">
         </form>
 

@@ -52,10 +52,11 @@
                 
                 
                 <h3 class="menu_perfil" id="btn_amigos">Amigos</h3>
+                <h3 class="menu_perfil" id="btn_menssagens">Menssagens</h3>
                 <h3 class="menu_perfil" id="btn_apostila">Apostilas</h3>
                 <h3 class="menu_perfil" id="btn_desafios">Desafios</h3>
                 <h3 class="menu_perfil" id="btn_config">configuração</h3>
-                <br><br><br>
+                <br><br>
               </div>
 
 
@@ -95,28 +96,32 @@
             {% include 'feed.html' %}
         </div>
         
-        <div id="mudar_senha" style="display: none;">
+        <div id="mudar_senha" class="divOculta">
             {% include 'mudar_senha.html' %}
         </div>
 
-        <div id="amigos" style="display: none;">
+        <div id="amigos" class="divOculta">
           {% include 'amigos.html' %}
         </div>
         
-        <div id="mudar_capa" style="display: none;">
+        <div id="mudar_capa" class="divOculta">
         {% include 'trocar_capa.html' %}
         </div>
 
-        <div id="apostilas" style="display: none;">
+        <div id="apostilas" class="divOculta">
           {% include 'apostilas.html' %}
         </div>
 
-        <div id="mudar_tema" style="display: none;">
+        <div id="mudar_tema" class="divOculta">
           {% include 'mudar_tema.html' %}
         </div>
 
-        <div id="apagar_conta" style="display: none;">
+        <div id="apagar_conta" class="divOculta">
           {% include 'apagar_conta.html' %}
+        </div>
+
+        <div id="menssagens" class="divOculta">
+        {% include 'menssagens.html' %}
         </div>
 
 
