@@ -182,7 +182,7 @@ def cadastrar():
 
     session['usuario'] = nome
     session['id'] = usuario_id  # Armazenar o ID do usuário na sessão
-
+    flash(f'Seja bem vindo {nome}, esse é seu feed de desafios, adicione alguns amigos para ver os desafios por eles postados!!')
     return redirect('/home')
 
 

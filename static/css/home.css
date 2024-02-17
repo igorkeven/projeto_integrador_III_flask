@@ -6,6 +6,10 @@ body {
     background-color: #e9ebee;
     display: flex;
     justify-content: space-between;
+    background-size: cover;
+     background-repeat: no-repeat;
+      background-position: center; 
+       background-attachment: fixed;
 }
 .navbar {
     background-color: var(--tema);
@@ -184,7 +188,11 @@ h1.nome{
  border: solid 2px black;
   position: sticky;
   top: 11%;
+  padding: 5px;
+  opacity: 1;
+  transition: opacity 0.3s ease; /* Transição suave */
 }
+
 
 
 .feed{

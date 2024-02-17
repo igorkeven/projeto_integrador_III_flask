@@ -1,4 +1,20 @@
 
+window.addEventListener('scroll', function() {
+  // Calcula a opacidade com base na posição de rolagem
+  var opacity = 1 - Math.min(window.scrollY / 350, 1);
+  
+  // Aplica a opacidade ao elemento
+  document.querySelector('#formDesafio').style.opacity = opacity.toString();
+  
+  // Altera a altura do elemento com base na opacidade
+  if (opacity <= 0) {
+    document.querySelector('#formDesafio').style.height = '20px';
+  } else {
+    document.querySelector('#formDesafio').style.height = 'auto';
+  }
+});
+
+
 
 // função para o esquema de mudança dos botões do menu lateral abaixo da foto
 $(document).ready(function(){
