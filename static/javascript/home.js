@@ -1,4 +1,15 @@
 
+$(document).ready(function() {
+  $(".topo").click(function() {
+    $("html, body").animate(
+      {
+        scrollTop: 0
+      },
+      100 // Tempo em milissegundos para a animação
+    );
+  });
+});
+
 window.addEventListener('scroll', function() {
   // Calcula a opacidade com base na posição de rolagem
   var opacity = 1 - Math.min(window.scrollY / 350, 1);
@@ -8,9 +19,12 @@ window.addEventListener('scroll', function() {
   
   // Altera a altura do elemento com base na opacidade
   if (opacity <= 0) {
-    document.querySelector('#formDesafio').style.height = '20px';
+    document.querySelector('#formDesafio').style.height = '10px';
+    document.querySelector('.topo').style.display = 'block';
   } else {
     document.querySelector('#formDesafio').style.height = 'auto';
+    document.querySelector('.topo').style.display = 'none';
+
   }
 });
 
