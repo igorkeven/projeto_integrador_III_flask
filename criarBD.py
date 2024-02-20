@@ -42,5 +42,25 @@ CREATE TABLE solicitacoes_amizade (
 )
 """)
 
-# Feche a conexão com o banco de dados
+# Criar a tabela desafios
+cursor.execute("""
+CREATE TABLE desafios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_usuario INTEGER,
+    pergunta TEXT,
+    respostaA TEXT,
+    respostaB TEXT,
+    respostaC TEXT,
+    respostaD TEXT,
+    respostaCERTA TEXT,
+    categoria TEXT,
+    dificuldade INTEGER
+)
+""")
+
+# Commit as mudanças
+conn.commit()
+
+# Fechar cursor e conexão com banco de dados
+cursor.close()
 conn.close()

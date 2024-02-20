@@ -25,7 +25,11 @@ tabela desafios
 id
 id_usuario
 pergunta
-resposta
+respostaA
+respostaB
+respostaC
+respostaD
+respostaCERTA
 
 -----------------------------
 

@@ -7,30 +7,37 @@
       <button class="topo divOculta">topo</button>
       <form action="#" method="post" id="formDesafio">
         <label for="pergunta">Pergunta</label>
-        <input type="text" name="pergunta" id="pergunta"><br>
+        <input type="text" name="pergunta" id="pergunta" required><br>
         <label for="respostaA">Alternativa A</label>
-        <input type="text" name="respostaA" id="respostaA"><br>
+        <input type="text" name="respostaA" id="respostaA" required><br>
         <label for="respostaB">Alternativa B</label>
         <input type="text" name="respostaB" id="respostaB"><br>
         <label for="respostaC">Alternativa C</label>
         <input type="text" name="respostaC" id="respostaC"><br>
         <label for="respostaD">Alternativa D</label>
         <input type="text" name="respostaD" id="respostaD"><br>
+        <label for="respostaCerta">Alternativa correta</label>
+        <select name="respostaCerta" id="respostaCerta" required>
+          <option value="respostaA">A</option>
+          <option value="respostaB">B</option>
+          <option value="respostaC">C</option>
+          <option value="respostaD">D</option>
+        </select><br>
         <label for="categoria">Categoria</label>
-        <select name="categoria" id="categoria">
-          <option value="">html</option>
-          <option value="">css</option>
-          <option value="">javaScript</option>
-          <option value="">backEnd</option>
+        <select name="categoria" id="categoria" required>
+          <option value="html">html</option>
+          <option value="css">css</option>
+          <option value="javaScript">javaScript</option>
+          <option value="backEnd">backEnd</option>
         </select>
         <label for="dificuldade">Dificuldade</label>
-        <select name="dificuldade" id="dificuldade">
-          <option value="">1</option>
-          <option value="">2</option>
-          <option value="">3</option>
-          <option value="">4</option>
+        <select name="dificuldade" id="dificuldade" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
         </select><br>
-         <button type="submit">criar novo desafio</button>
+                 <button type="submit">criar novo desafio</button>
          
          
       </form>

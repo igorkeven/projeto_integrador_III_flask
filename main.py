@@ -3,6 +3,26 @@ import sqlite3
 import os
 
 
+#  --------------  INDICE --------------------------------------------
+# LINHA --------- CONTEUDO --------------
+# 0-3   --------- IMPORTAÇÕES DAS BIBLIOTECAS E FRAMEWORK
+# 26/27 --------- configurações
+# 29    --------- função para colocar em produção ou debug
+# 43  ----------- função para pagina inicial (login.html)
+# 55 ------------ função para a pagina home, pagina principal de perfil do usuario
+# 126 ----------- função para logout sair da seção
+# 133 ----------- função para acesso, pegar dados e autenticar login
+# 169 ----------- função para pagina onde o usuario faz o cadastro (cadastro.html)
+# 175 ----------- função para autenticar dados do cadastro e salvar os dados
+# 213 ----------- função para mudar o tema das cores
+# 241 ----------- função para troca de senha
+# 268 ----------- função para alterar a imagem de capa/fundo
+# 301 ----------- função para enviar foto de perfil
+# 337 ----------- função para apagar conta de usuario e tudo relacionado
+# 386 ----------- função para enviar e salvar no banco o pedido de amizade
+# 412 ----------- função para adicionar amigo assim que o pedido for aceito
+# 442 ----------- função para negar pedido de amizade e apaga-lo
+# CASO ADICIONE MAIS DESCRIÇÕES AQUI ATENTE-SE AS MUDANÇAS DOS NUMEROS DAS LINHAS E ATUALIZE..OBG
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'igorkeven'
 
@@ -441,6 +461,38 @@ def negar_amizade():
     conn.close()
 
     return redirect('/home')
+
+
+@app.route('/novo_desafio', methods=['POST'])
+def novo_desafio():
+    usuario_id = session['id']
+    pergunta = request.form.get('pergunta')
+    respostaA = request.form.get('respostaA') 
+    respostaB = request.form.get('respostaB') or None
+    respostaC = request.form.get('respostaC') or None
+    respostaD = request.form.get('respostaD') or None
+    respostaCerta = request.form.get('respostaCerta') 
+    categoria = request.form.get('categoria') 
+    dificuldade = request.form.get('dificuldade') 
+
+    # Criar uma conexão com o banco de dados
+    conn = sqlite3.connect('usuarios.db')
+  
+    # Obter um cursor para executar consultas
+    cursor = conn.cursor()
+
+    # Inserir os dados na tabela desafios
+    cursor.execute("INSERT INTO desafios (id_usuario, pergunta, respostaA, respostaB, respostaC, respostaD, respostaCERTA, categoria, dificuldade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (usuario_id, pergunta, respostaA, respostaB, respostaC, respostaD, respostaCerta, categoria, dificuldade))
+
+    # Commit as mudanças
+    conn.commit()
+
+    # Fechar cursor e conexão com banco de dados
+    cursor.close()
+    conn.close()
+
+    return redirect('/home')
+
 
 
 
