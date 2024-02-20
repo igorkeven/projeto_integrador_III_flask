@@ -5,23 +5,33 @@ import os
 
 #  --------------  INDICE --------------------------------------------
 # LINHA --------- CONTEUDO --------------
-# 0-3   --------- IMPORTAÇÕES DAS BIBLIOTECAS E FRAMEWORK
-# 26/27 --------- configurações
-# 29    --------- função para colocar em produção ou debug
-# 43  ----------- função para pagina inicial (login.html)
-# 55 ------------ função para a pagina home, pagina principal de perfil do usuario
-# 126 ----------- função para logout sair da seção
-# 133 ----------- função para acesso, pegar dados e autenticar login
-# 169 ----------- função para pagina onde o usuario faz o cadastro (cadastro.html)
-# 175 ----------- função para autenticar dados do cadastro e salvar os dados
-# 213 ----------- função para mudar o tema das cores
-# 241 ----------- função para troca de senha
-# 268 ----------- função para alterar a imagem de capa/fundo
-# 301 ----------- função para enviar foto de perfil
-# 337 ----------- função para apagar conta de usuario e tudo relacionado
-# 386 ----------- função para enviar e salvar no banco o pedido de amizade
-# 412 ----------- função para adicionar amigo assim que o pedido for aceito
-# 442 ----------- função para negar pedido de amizade e apaga-lo
+# 0-3 ----------- IMPORTAÇÕES DAS BIBLIOTECAS E FRAMEWORK
+# 36/37 --------- configurações flask
+# 39  ----------- função para colocar em produção ou debug
+# 53  ----------- função para pagina inicial (login.html)
+# 65  ----------- função para a pagina home, pagina principal de perfil do usuario
+# 136 ----------- função para logout sair da seção
+# 143 ----------- função para acesso, pegar dados e autenticar login
+# 179 ----------- função para pagina onde o usuario faz o cadastro (cadastro.html)
+# 185 ----------- função para autenticar dados do cadastro e salvar os dados
+# 223 ----------- função para mudar o tema das cores
+# 251 ----------- função para troca de senha
+# 278 ----------- função para alterar a imagem de capa/fundo
+# 311 ----------- função para enviar foto de perfil
+# 347 ----------- função para apagar conta de usuario e tudo relacionado
+# 396 ----------- função para enviar e salvar no banco o pedido de amizade
+# 422 ----------- função para adicionar amigo assim que o pedido for aceito
+# 452 ----------- função para negar pedido de amizade e apaga-lo
+# 476 ----------- função para enviar novo desafio
+#
+#
+#
+#
+#
+#
+#
+#
+#
 # CASO ADICIONE MAIS DESCRIÇÕES AQUI ATENTE-SE AS MUDANÇAS DOS NUMEROS DAS LINHAS E ATUALIZE..OBG
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'igorkeven'
@@ -56,7 +66,7 @@ def login():
 def home():
     if 'usuario' in session:  # SE TENTAR ENTRAR SEM LOGIN NAO CAI AQUI
         nome = session['usuario']  # Obtenha o nome do usuário da sessão
-# Criar uma conexão com o banco de dados
+        # Criar uma conexão com o banco de dados
         conn = sqlite3.connect('usuarios.db')
         cursor = conn.cursor()
 
@@ -101,6 +111,27 @@ def home():
 
         solicitacoes_amizade = cursor.fetchall()
 
+        # area para buscar apenas os desafios dos amigos adicionados
+        cursor.execute("""
+            SELECT d.* 
+            FROM desafios d
+            INNER JOIN amigos a ON d.id_usuario = a.amigo_id
+            WHERE a.usuario_id = ?
+        """, (usuario[0],))
+
+        desafios = cursor.fetchall()
+
+
+
+        cursor.execute("""
+            SELECT u.* 
+            FROM usuario u
+            INNER JOIN desafios d ON u.id = d.id_usuario
+            WHERE u.id != ?
+        """, (usuario[0],))
+
+        usuarios_com_desafios = cursor.fetchall()
+
         # Fechar cursor e conexão com banco de dados
         cursor.close()
         conn.close()
@@ -112,7 +143,7 @@ def home():
             img_capa = usuario[5]  # Obtenha a imagem de capa do usuário
             # Aqui você pode adicionar o código para buscar as apostilas do usuário
             apostilas = ['apostila1.pdf','apostila2.pdf','apostila3.pdf','apostila4.pdf']  # DEPOIS APAGAR E PEGAR DADOS DO BD
-            return render_template('home.html',solicitacoes_amizade=solicitacoes_amizade,possiveis_amigos=possiveis_amigos,nome=nome, fundo=img_capa, apostilas=apostilas, tema=tema,img_perfil=img_perfil, amigos=amigos)
+            return render_template('home.html',usuarios_com_desafios=usuarios_com_desafios,desafios=desafios,solicitacoes_amizade=solicitacoes_amizade,possiveis_amigos=possiveis_amigos,nome=nome, fundo=img_capa, apostilas=apostilas, tema=tema,img_perfil=img_perfil, amigos=amigos)
         else:
             flash('Erro ao buscar os dados do usuário!!')
             return redirect('/')
@@ -490,7 +521,7 @@ def novo_desafio():
     # Fechar cursor e conexão com banco de dados
     cursor.close()
     conn.close()
-
+    flash('desafio criado e salvo no banco de dados!!')
     return redirect('/home')
 
 

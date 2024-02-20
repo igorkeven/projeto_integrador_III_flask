@@ -206,6 +206,10 @@ h1.nome{
   font-size: 18px;
 }
 
+.feed img{
+  height: 80px;
+  width: 80px;
+}
 
 .divOculta {
   display: none;

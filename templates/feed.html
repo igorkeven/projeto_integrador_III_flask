@@ -5,7 +5,7 @@
       
       <h1>Postar novo Desafio</h1>
       <button class="topo divOculta">topo</button>
-      <form action="#" method="post" id="formDesafio">
+      <form action="/novo_desafio" method="post" id="formDesafio">
         <label for="pergunta">Pergunta</label>
         <input type="text" name="pergunta" id="pergunta" required><br>
         <label for="respostaA">Alternativa A</label>
@@ -55,68 +55,47 @@
 <script>
     setTimeout(function() {
         document.getElementById('alerta').style.display = 'none';
-    }, 5000);
+    }, 10000); // tempo que o alerta vai ficar visivel em milisegundos
 </script>
 {% endif %}
 
+<br><br>
 
-      <div class="feed">
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-          <h2>conteudo postado</h2>
-        </form>
-      </div>
+{% if usuarios_com_desafios %}
+  {% for usuario in usuarios_com_desafios %}
+      {% for desafio in desafios %}
+        {% if desafio[1] == usuario[0] %}
+        <div class="feed">
+          <img src="{{ usuario[4] }}" alt="">
+          <h1>{{ usuario[1] }}</h1>
     
-      <div class="feed">
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-          <h2>conteudo postado</h2>
-        </form>
-      </div>
+          <form action="#" method="post">
+            <h2>{{ desafio[2] }}</h2>
+            <!-- Aqui você pode adicionar os campos para as respostas -->
+            <input type="radio" id="respostaA" name="resposta" value="A">
+            <label for="respostaA">{{ desafio[3] }}</label><br>
+            {% if desafio[4] != None %}
+            <input type="radio" id="respostaB" name="resposta" value="B">
+            <label for="respostaB">{{ desafio[4] }}</label><br>
+            {% endif %}
+            {% if desafio[5] != None %}
+            <input type="radio" id="respostaC" name="resposta" value="C">
+            <label for="respostaC">{{ desafio[5] }}</label><br>
+            {% endif %}
+            {% if desafio[6] != None %}
+            <input type="radio" id="respostaD" name="resposta" value="D">
+            <label for="respostaD">{{ desafio[6] }}</label><br>
+            {% endif %}
+            <input type="submit" value="Enviar resposta">
+          </form>
+        </div>
+        {% endif %}
+      {% endfor %}
     
-      <div class="feed">
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-          <h2>conteudo postado</h2>
-        </form>
-      </div>
+  {% endfor %}
+{% endif %}
+
     
-      <div class="feed">
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-          <h2>conteudo postado</h2>
-        </form>
-      </div>
-    
-      <div class="feed">
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-          <h2>conteudo postado</h2>
-        </form>
-      </div>
-    
-      <div class="feed">
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-          <h2>conteudo postado</h2>
-        </form>
-      </div>
-    
-      <div class="feed">
-        <img src="/static/imagens/usuario.png" alt="">
-        <h1>nome usuario </h1>
-        <form action="#" method="post">
-          <h2>conteudo postado</h2>
-        </form>
-      </div>
-    
-       
 
 
     
