@@ -62,40 +62,53 @@
 <br><br>
 
 {% if usuarios_com_desafios %}
+  {% set desafios_processados = [] %}
   {% for usuario in usuarios_com_desafios %}
-      {% for desafio in desafios %}
-        {% if desafio[1] == usuario[0] %}
+    {% for desafio in desafios %}
+      {% if desafio[1] == usuario[0] and desafio[0] not in desafios_processados %}
         <div class="feed">
           <img src="{{ usuario[4] }}" alt="">
           <h1>{{ usuario[1] }}</h1>
-    
-          <form action="#" method="post">
+          <form action="#" method="post" onsubmit="return verificarResposta(this);" data-resposta-certa="{{ desafio[7] }}">
             <h2>{{ desafio[2] }}</h2>
-            <!-- Aqui você pode adicionar os campos para as respostas -->
-            <input type="radio" id="respostaA" name="resposta" value="A">
+            <input type="radio" id="respostaA" name="resposta" value="respostaA">
             <label for="respostaA">{{ desafio[3] }}</label><br>
             {% if desafio[4] != None %}
-            <input type="radio" id="respostaB" name="resposta" value="B">
+            <input type="radio" id="respostaB" name="resposta" value="respostaB">
             <label for="respostaB">{{ desafio[4] }}</label><br>
             {% endif %}
             {% if desafio[5] != None %}
-            <input type="radio" id="respostaC" name="resposta" value="C">
+            <input type="radio" id="respostaC" name="resposta" value="respostaC">
             <label for="respostaC">{{ desafio[5] }}</label><br>
             {% endif %}
             {% if desafio[6] != None %}
-            <input type="radio" id="respostaD" name="resposta" value="D">
+            <input type="radio" id="respostaD" name="resposta" value="respostaD">
             <label for="respostaD">{{ desafio[6] }}</label><br>
             {% endif %}
             <input type="submit" value="Enviar resposta">
           </form>
         </div>
-        {% endif %}
-      {% endfor %}
-    
+        {% set _ = desafios_processados.append(desafio[0]) %}
+      {% endif %}
+    {% endfor %}
   {% endfor %}
 {% endif %}
 
-    
+
+
+
+<script>
+function verificarResposta(form) {
+  var respostaCerta = form.getAttribute('data-resposta-certa');
+  var respostaUsuario = form.elements['resposta'].value;
+  if (respostaUsuario == respostaCerta) {
+    alert("Resposta correta! também né facil assim.");
+  } else {
+    alert("Resposta errada. largue ti e vai ser empacotador");
+  }
+  return false;  // Retorne false para evitar que o formulário seja submetido
+}
+</script>
 
 
     

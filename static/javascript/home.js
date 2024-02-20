@@ -20,11 +20,12 @@ window.addEventListener('scroll', function() {
   // Altera a altura do elemento com base na opacidade
   if (opacity <= 0) {
     document.querySelector('#formDesafio').style.height = '10px';
+    document.querySelector('#formDesafio').style.display = 'none';
     document.querySelector('.topo').style.display = 'block';
   } else {
     document.querySelector('#formDesafio').style.height = 'auto';
     document.querySelector('.topo').style.display = 'none';
-
+    document.querySelector('#formDesafio').style.display = 'block';
   }
 });
 
