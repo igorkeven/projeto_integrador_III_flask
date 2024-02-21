@@ -63,7 +63,7 @@
 
               <div class="menu_lateral_esquendo_2" >
                 
-                <span class="custom-icon btn_voltarConfig">voltar</span>
+                <span class="custom-icon btn_voltarConfig" id="btn_voltarConfig1">voltar</span>
                
                 <h3 class="menu_perfil" id="escolha_formulario_senha"> Mudar senha</h3>
                 <h3 class="menu_perfil" id="btn_mudar_tema"> Mudar tema</h3>
@@ -77,10 +77,10 @@
                 
               <div class="menu_lateral_esquendo_3" >
                 
-                <span class="custom-icon btn_voltarConfig">voltar</span>
+                <span class="custom-icon btn_voltarConfig" id="btn_voltarConfig2">voltar</span>
                
-                <h3 class="menu_perfil" id=""> Meus desafios</h3>
-                <h3 class="menu_perfil" id=""> desafios publicos</h3>
+                <h3 class="menu_perfil" id="btn_desafios_concluidos">Desafios concluidos</h3>
+                <h3 class="menu_perfil" id="btn_meus_desafios">Meus desafios</h3>
      
       
               </div>
@@ -123,6 +123,14 @@
 
         <div id="mensagens" class="divOculta">
         {% include 'menssagens.html' %}
+        </div>
+
+        <div id="desafios_concluidos" class="divOculta">
+          {% include 'desafios_concluidos.html' %}
+        </div>
+
+        <div id="meus_desafios" class="divOculta">
+          {% include 'meus_desafios.html' %}
         </div>
 
 

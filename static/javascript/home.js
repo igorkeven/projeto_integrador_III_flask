@@ -35,7 +35,7 @@ window.addEventListener('scroll', function() {
 $(document).ready(function(){
     var activeButton = null;
   
-    $("#escolha_formulario_senha, #btn_mudar_capa, #btn_amigos, #btn_apostila, #btn_mudar_tema, #btn_apagar_conta, #btn_mensagens ").click(function(){
+    $("#escolha_formulario_senha, #btn_meus_desafios, #btn_desafios_concluidos, #btn_mudar_capa, #btn_amigos, #btn_apostila, #btn_mudar_tema, #btn_apagar_conta, #btn_mensagens, #btn_voltarConfig1, #btn_voltarConfig2 ").click(function(){
       var clickedId = $(this).attr('id');
       var targetDivId;
       var buttonText;
@@ -64,27 +64,50 @@ $(document).ready(function(){
         targetDivId = 'mensagens';
         buttonText = "Feed";
 
-      }
+      } else if (clickedId === 'btn_desafios_concluidos') {
+        targetDivId = 'desafios_concluidos';
+        buttonText = "feed";
+      } else if (clickedId === 'btn_meus_desafios') {
+        targetDivId = 'meus_desafios';
+        buttonText ='feed';
+     } else if (clickedId === 'btn_voltarConfig1' || clickedId === 'btn_voltarConfig2') {
+     
+         targetDivId = 'feed';
+         buttonText = "Voltar";
+        
+       }
   
       if (clickedId === activeButton) {
         // Se o botão ativo for clicado novamente, mostre o feed e redefina o texto do botão
         $("#feed").show();
+        if( targetDivId !== 'feed'){
         $("#" + targetDivId).hide();
+        }
         $(this).text(
           clickedId === 'escolha_formulario_senha' ? "Mudar senha" : 
           clickedId === 'btn_mudar_capa' ? "Mudar foto de capa" : 
           clickedId === 'btn_amigos' ? "Amigos" :
           clickedId === 'btn_mudar_tema' ? 'Mudar Tema' :
           clickedId === 'btn_apagar_conta' ? 'Apagar conta':
-          clickedId === 'btn_mensagens' ? 'Mensagens': 'apostilas' );
+          clickedId === 'btn_mensagens' ? 'Mensagens':
+          clickedId === 'btn_desafios_concluidos' ? 'Desafios concluidos' :
+          clickedId === 'btn_meus_desafios' ? 'Meus desafios':
+          clickedId === 'btn_voltarConfig1' ? 'Voltar' :
+          clickedId === 'btn_voltarConfig2' ? 'Voltar' :
+          clickedId === 'btn_apostila' ?
+          'apostilas' : 'Voltar');
         activeButton = null;
       } else {
-        // Esconda todas as divs
-        $("#feed, #mudar_senha, #mudar_capa, #amigos, #apostilas , #mudar_tema, #apagar_conta, #mensagens").hide();
-  
+// Esconda todas as divs
+  $("#feed, #mudar_senha, #mudar_capa, #amigos, #apostilas , #mudar_tema, #apagar_conta, #mensagens , #desafios_concluidos, #meus_desafios").hide();      
+
+        
+          
         // Mostre a div correspondente ao botão clicado
         $("#" + targetDivId).show();
         $(this).text(buttonText);
+      
+       
   
         // Redefina o texto do botão ativo anterior
         if (activeButton) {
@@ -95,13 +118,24 @@ $(document).ready(function(){
             activeButton === 'btn_mudar_tema' ? 'Mudar Tema' :
             activeButton === 'btn_apagar_conta' ? 'Apagar conta':
             activeButton === 'btn_mensagens' ? 'Mensagens':
-             'apostilas' );
+            activeButton === 'btn_desafios_concluidos' ? 'Desafios concluidos' :
+            activeButton === 'btn_meus_desafios' ? 'Meus desafios':
+            activeButton === 'btn_voltarConfig1' ? 'Voltar' :
+            activeButton === 'btn_voltarConfig2' ? 'Voltar' :
+            activeButton === 'btn_apostila' ? 'apostilas' :
+             'Voltar');
+             
         }
   
         activeButton = clickedId;
       }
     });
   });
+
+
+  
+
+
 
   //------------------------------------------------------------------------
 
@@ -113,7 +147,6 @@ $(document).ready(function(){
   const menuLateralEsquerdo1 = document.getElementsByClassName('menu_lateral_esquendo_1')[0];
   const menuLateralEsquerdo2 = document.getElementsByClassName('menu_lateral_esquendo_2')[0];
   const menuLateralEsquerdo3 = document.getElementsByClassName('menu_lateral_esquendo_3')[0];
-  
   btnConfig.addEventListener('click', function() {
     
     menuLateralEsquerdo1.style.display = 'none';
@@ -130,6 +163,7 @@ $(document).ready(function(){
       menuLateralEsquerdo1.style.display = 'block';
       menuLateralEsquerdo2.style.display = 'none';
       menuLateralEsquerdo3.style.display = 'none';
+      
     })
   });
 
