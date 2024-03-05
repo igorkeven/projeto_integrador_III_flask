@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, session, jsonify
 import sqlite3
 import os
 
@@ -524,8 +524,112 @@ def novo_desafio():
     flash('desafio criado e salvo no banco de dados!!')
     return redirect('/home')
 
+#-------------   API DO APLICATIVO ------------------------------------
 
 
+@app.route('/api', methods=['GET'])
+def api():
+
+
+    conn = sqlite3.connect('usuarios.db')
+    cursor = conn.cursor()
+
+    # Buscar os dados do usuário no banco de dados
+    cursor.execute("SELECT * FROM usuario WHERE nome = ?", ("igor",))
+
+    # Armazenar resultados da consulta em uma variável
+    usuario = cursor.fetchone()
+    
+    # Buscar os dados dos amigos do usuário
+    cursor.execute("""
+        SELECT u.* 
+        FROM usuario u
+        INNER JOIN amigos a ON u.id = a.amigo_id
+        WHERE a.usuario_id = ?
+    """, (usuario[0],))
+
+    
+
+    amigos = cursor.fetchall()  # Obter todos os dados dos amigos
+
+    # Buscar os dados dos usuários que não são amigos do usuário e não são o próprio usuário
+    cursor.execute("""
+        SELECT * 
+        FROM usuario 
+        WHERE id NOT IN (
+            SELECT amigo_id 
+            FROM amigos 
+            WHERE usuario_id = ?
+        )
+        AND id != ?
+    """, (usuario[0], usuario[0]))
+
+    possiveis_amigos = cursor.fetchall()  # Obter todos os dados dos possíveis amigos
+
+    cursor.execute("""
+        SELECT u.* 
+        FROM usuario u
+        INNER JOIN solicitacoes_amizade s ON u.id = s.solicitante_id
+        WHERE s.solicitado_id = ?
+    """, (usuario[0],))
+
+    solicitacoes_amizade = cursor.fetchall()
+
+    # area para buscar apenas os desafios dos amigos adicionados
+    cursor.execute("""
+        SELECT d.* 
+        FROM desafios d
+        INNER JOIN amigos a ON d.id_usuario = a.amigo_id
+        WHERE a.usuario_id = ?
+    """, (usuario[0],))
+
+    desafios = cursor.fetchall()
+
+
+
+    cursor.execute("""
+        SELECT u.* 
+        FROM usuario u
+        INNER JOIN desafios d ON u.id = d.id_usuario
+        WHERE u.id != ?
+    """, (usuario[0],))
+
+    usuarios_com_desafios = cursor.fetchall()
+
+    # Fechar cursor e conexão com banco de dados
+    cursor.close()
+    conn.close()
+
+
+    if usuario is not None:  # Se encontramos um usuário que corresponde ao nome de usuário
+        tema = usuario[3]  # Obtenha o tema do perfil do usuário
+        img_perfil = usuario[4]  # Obtenha a imagem de perfil do usuário
+        img_capa = usuario[5]  # Obtenha a imagem de capa do usuário
+        # Aqui você pode adicionar o código para buscar as apostilas do usuário
+        apostilas = ['apostila1.pdf','apostila2.pdf','apostila3.pdf','apostila4.pdf']  # DEPOIS APAGAR E PEGAR DADOS DO BD
+
+
+
+        return jsonify({
+            'usuario': usuario,
+            'amigos': amigos,
+            'possiveis_amigos': possiveis_amigos,
+            'solicitacoes_amizade': solicitacoes_amizade,
+            'desafios': desafios,
+            'usuarios_com_desafios': usuarios_com_desafios,
+            'tema': tema,
+            'img_perfil': img_perfil,
+            'img_capa': img_capa,
+            'apostilas': apostilas,
+        })
+
+    else:
+        return jsonify({'error': 'Usuário não encontrado'}), 404
+
+
+
+
+#-----------------------_______________-----------------------___________------------
 
 # colocar o site no ar
 
