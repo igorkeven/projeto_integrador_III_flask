@@ -524,19 +524,42 @@ def novo_desafio():
     flash('desafio criado e salvo no banco de dados!!')
     return redirect('/home')
 
+
+
+
 #-------------   API DO APLICATIVO ------------------------------------
+@app.route('/api/todosUsuarios', methods=['GET'])
+def todosUsuarios():
+    conn = sqlite3.connect('usuarios.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM usuario")
+
+    todos_usuarios =  cursor.fetchall()
+
+    # Fechar cursor e conexão com banco de dados
+    cursor.close()
+    conn.close()
 
 
-@app.route('/api', methods=['GET'])
-def api():
+
+    return jsonify({
+         
+            'todos_usuarios': todos_usuarios,
+        })
 
 
+
+
+@app.route('/api/<username>', methods=['GET'])
+def api(username):
     conn = sqlite3.connect('usuarios.db')
     cursor = conn.cursor()
 
     # Buscar os dados do usuário no banco de dados
-    cursor.execute("SELECT * FROM usuario WHERE nome = ?", ("igor",))
+    cursor.execute("SELECT * FROM usuario WHERE nome = ?", (username,))
 
+   
     # Armazenar resultados da consulta em uma variável
     usuario = cursor.fetchone()
     
@@ -596,6 +619,10 @@ def api():
 
     usuarios_com_desafios = cursor.fetchall()
 
+    cursor.execute("SELECT * FROM usuario")
+
+    todos_usuarios =  cursor.fetchall()
+
     # Fechar cursor e conexão com banco de dados
     cursor.close()
     conn.close()
@@ -621,6 +648,7 @@ def api():
             'img_perfil': img_perfil,
             'img_capa': img_capa,
             'apostilas': apostilas,
+            'todos_usuarios': todos_usuarios,
         })
 
     else:
