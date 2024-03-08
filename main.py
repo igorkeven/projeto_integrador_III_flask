@@ -273,8 +273,11 @@ def mudarTema():
 def novaSenha():
     novasenha = request.form.get('nova_senha')
     nome = session['usuario']  # Obtenha o nome do usuário da sessão
-    id = session['id']
-    # Criar uma conexão com o banco de dados
+    if 'id' in session:
+        id = session['id']
+    else:
+        id = request.form.get('id_usuario')
+    
     # Criar uma conexão com o banco de dados
     conn = sqlite3.connect('usuarios.db')
   
@@ -653,6 +656,23 @@ def api(username):
 
     else:
         return jsonify({'error': 'Usuário não encontrado'}), 404
+
+
+
+@app.route("/novaSenhaApp", methods=['POST'])
+def novaSenhaApp():
+    novasenha = request.form.get('nova_senha')
+  
+    id = request.form.get('id_usuario')
+    conn = sqlite3.connect('usuarios.db')
+    cursor = conn.cursor()
+    cursor.execute("UPDATE usuario SET senha = ? WHERE id = ?", (novasenha, id))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({'status': 'success', 'message': 'Senha alterada com sucesso'})
+
 
 
 
